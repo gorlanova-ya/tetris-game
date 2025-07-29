@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💊 Витаминный Тетрис</title>
-    <meta name="description" content="Яркий Тетрис с витаминами! Играй на телефоне и ПК без установки.">
+    <meta name="description" content="Яркий Тетрис с витаминами! Играй на телефоне без прокрутки.">
     <style>
         * {
             margin: 0;
@@ -26,7 +26,7 @@
         }
 
         h1 {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: #4e342e;
             text-align: center;
             font-size: 1.5em;
@@ -38,7 +38,7 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             box-shadow: 0 10px 25px rgba(94, 38, 18, 0.2);
             border-radius: 15px;
             overflow: hidden;
@@ -46,14 +46,7 @@
             padding: 15px;
         }
 
-        .game-area {
-            display: flex;
-            width: 100%;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
+        /* Поле игры — центрировано */
         canvas {
             border: 3px solid #d7ccc8;
             border-radius: 10px;
@@ -61,41 +54,40 @@
             box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
             max-width: 100%;
             height: auto;
+            display: block;
+            margin: 0 auto 12px;
         }
 
-        .game-info {
+        /* Информация о счёте — под полем */
+        .score-container {
             display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            min-width: 140px;
-            background-color: #fffaf4;
-            padding: 12px;
-            border-radius: 10px;
-            border: 2px solid #e0d6c8;
-            margin-top: 15px;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 15px;
+            gap: 10px;
         }
 
         .score-board {
             background: linear-gradient(135deg, #8d6e63, #6d4c41);
             color: #fffaf4;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
-            margin-bottom: 12px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            flex: 1;
+            min-width: 80px;
         }
 
         .score-board h2 {
-            margin-top: 0;
-            font-size: 1.1em;
+            margin: 0 0 5px 0;
+            font-size: 1em;
             font-weight: 600;
             text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
         }
 
         .score-value {
-            font-size: 1.5em;
+            font-size: 1.4em;
             font-weight: bold;
-            margin: 6px 0;
             color: #fffaf4;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
@@ -104,14 +96,16 @@
             background-color: #fffaf4;
             padding: 10px;
             border-radius: 8px;
-            font-size: 0.8em;
-            line-height: 1.5;
+            font-size: 0.75em;
+            line-height: 1.4;
             border: 1px solid #e0d6c8;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            width: 100%;
         }
 
         .controls p {
-            margin: 5px 0;
+            margin: 4px 0;
             color: #5d4037;
         }
 
@@ -135,11 +129,12 @@
             transform: translateY(-1px);
         }
 
+        /* Виртуальные кнопки — под счётом */
         .mobile-controls {
             display: none;
             width: 100%;
             max-width: 300px;
-            margin-top: 15px;
+            margin-top: 12px;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
         }
@@ -175,20 +170,33 @@
             padding: 20px 0;
         }
 
+        /* На мобильных — убираем отступы и делаем компактно */
         @media (max-width: 600px) {
             h1 {
                 font-size: 1.4em;
+                margin-bottom: 10px;
             }
-            .game-info {
-                min-width: auto;
-                width: 100%;
-                font-size: 0.9em;
+            .game-container {
+                padding: 12px;
+                border-radius: 12px;
             }
-            .controls {
-                font-size: 0.75em;
+            .score-container {
+                flex-direction: row;
+                gap: 8px;
+            }
+            .score-board {
+                padding: 8px;
             }
             .score-value {
                 font-size: 1.3em;
+            }
+            .controls {
+                font-size: 0.7em;
+                padding: 8px;
+            }
+            button {
+                padding: 9px 14px;
+                font-size: 0.95em;
             }
         }
     </style>
@@ -196,24 +204,28 @@
 <body>
     <h1>💊 Витаминный Тетрис</h1>
     <div class="game-container">
-        <div class="game-area">
-            <canvas id="tetris" width="300" height="600"></canvas>
-            <div class="game-info">
-                <div class="score-board">
-                    <h2>Счёт</h2>
-                    <div id="score" class="score-value">0</div>
-                    <h2>Уровень</h2>
-                    <div id="level" class="score-value">1</div>
-                </div>
-                <div class="controls">
-                    <p>← →: Движение</p>
-                    <p>↓: Ускорение</p>
-                    <p>↑: Поворот</p>
-                </div>
-                <button id="restart-button">Начать заново</button>
+        <!-- Игровое поле -->
+        <canvas id="tetris" width="300" height="600"></canvas>
+
+        <!-- Счёт и уровень под полем -->
+        <div class="score-container">
+            <div class="score-board">
+                <h2>Счёт</h2>
+                <div id="score" class="score-value">0</div>
+            </div>
+            <div class="score-board">
+                <h2>Уровень</h2>
+                <div id="level" class="score-value">1</div>
             </div>
         </div>
-        
+
+        <!-- Управление -->
+        <div class="controls">
+            <p>← →: Движение</p>
+            <p>↓: Ускорение</p>
+            <p>↑: Поворот</p>
+        </div>
+
         <!-- Виртуальные кнопки -->
         <div class="mobile-controls" id="mobile-controls">
             <button class="mobile-btn" id="btn-left">←</button>
@@ -221,8 +233,12 @@
             <button class="mobile-btn" id="btn-right">→</button>
             <button class="mobile-btn wide" id="btn-down">↓</button>
         </div>
+
+        <!-- Кнопка перезапуска -->
+        <button id="restart-button">Начать заново</button>
     </div>
 
+    <!-- Экран "Игра окончена" -->
     <div class="game-over" id="game-over">
         <h2>Игра окончена!</h2>
         <p>Ваш счёт: <span id="final-score">0</span></p>
@@ -270,20 +286,22 @@
                     window.addEventListener('resize', () => this.resizeCanvas());
                 },
 
+                // Адаптивный размер поля
                 resizeCanvas() {
-                    const maxWidth = 300;
-                    const maxHeight = window.innerHeight * 0.5;
-                    const maxBlockSizeByWidth = Math.floor(maxWidth / this.COLS);
-                    const maxBlockSizeByHeight = Math.floor(maxHeight / this.ROWS);
+                    const maxWidth = Math.min(300, window.innerWidth - 20);
+                    const maxHeight = window.innerHeight * 0.45; // Занимает 45% высоты экрана
+                    const blockSizeByWidth = Math.floor(maxWidth / this.COLS);
+                    const blockSizeByHeight = Math.floor(maxHeight / this.ROWS);
                     
-                    let blockSize = Math.min(maxBlockSizeByWidth, maxBlockSizeByHeight, 30);
-                    blockSize = Math.max(blockSize, 15);
+                    let blockSize = Math.min(blockSizeByWidth, blockSizeByHeight, 30);
+                    blockSize = Math.max(blockSize, 14);
 
                     this.BLOCK_SIZE = blockSize;
                     this.canvas.width = this.COLS * blockSize;
                     this.canvas.height = this.ROWS * blockSize;
                 },
 
+                // Показываем виртуальные кнопки на мобильных
                 setupMobileControls() {
                     const mobileControls = document.getElementById('mobile-controls');
                     if (window.innerWidth <= 600) {
@@ -322,6 +340,7 @@
                     this.board = Array(this.ROWS).fill().map(() => Array(this.COLS).fill(0));
                 },
 
+                // Фигуры
                 PIECES: [
                     [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
                     [[1,1],[1,1]],
@@ -332,6 +351,7 @@
                     [[1,1,0],[0,1,1],[0,0,0]]
                 ],
 
+                // Цвета витаминов
                 COLORS: [
                     '#e91e63','#ffeb3b','#2196f3','#4caf50','#ff9800','#9c27b0','#00bcd4'
                 ],

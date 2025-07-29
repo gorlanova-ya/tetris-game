@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>💊 Витаминный Тетрис</title>
-    <meta name="description" content="Яркий Тетрис с витаминами! Играй в браузере без установки.">
+    <meta name="description" content="Яркий Тетрис с витаминами! Играй на телефоне и ПК без установки.">
     <style>
         * {
             margin: 0;
@@ -17,7 +17,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 100vh;
             background-color: #f5f0e6;
             color: #5d4037;
@@ -29,14 +29,13 @@
             margin-bottom: 10px;
             color: #4e342e;
             text-align: center;
-            font-size: 1.8em;
+            font-size: 1.5em;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
         .game-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
             align-items: center;
             width: 100%;
             max-width: 600px;
@@ -50,7 +49,7 @@
         .game-area {
             display: flex;
             width: 100%;
-            justify-content: space-between;
+            justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
         }
@@ -68,50 +67,51 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            min-width: 160px;
+            min-width: 140px;
             background-color: #fffaf4;
-            padding: 15px;
+            padding: 12px;
             border-radius: 10px;
             border: 2px solid #e0d6c8;
+            margin-top: 15px;
         }
 
         .score-board {
             background: linear-gradient(135deg, #8d6e63, #6d4c41);
             color: #fffaf4;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
 
         .score-board h2 {
             margin-top: 0;
-            font-size: 1.2em;
+            font-size: 1.1em;
             font-weight: 600;
             text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
         }
 
         .score-value {
-            font-size: 1.8em;
+            font-size: 1.5em;
             font-weight: bold;
-            margin: 8px 0;
+            margin: 6px 0;
             color: #fffaf4;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
         .controls {
             background-color: #fffaf4;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
-            font-size: 0.85em;
+            font-size: 0.8em;
             line-height: 1.5;
             border: 1px solid #e0d6c8;
             margin-bottom: 10px;
         }
 
         .controls p {
-            margin: 6px 0;
+            margin: 5px 0;
             color: #5d4037;
         }
 
@@ -139,7 +139,7 @@
             display: none;
             width: 100%;
             max-width: 300px;
-            margin-top: 10px;
+            margin-top: 15px;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
         }
@@ -152,8 +152,8 @@
             background: #8d6e63;
             color: white;
             border: none;
-            padding: 15px 0;
-            font-size: 1.2em;
+            padding: 18px 0;
+            font-size: 1.3em;
             border-radius: 8px;
             cursor: pointer;
             box-shadow: 0 3px 6px rgba(0,0,0,0.1);
@@ -171,60 +171,24 @@
         .mobile-btn.wide {
             grid-column: 1 / -1;
             background: #5d4037;
-        }
-
-        .game-over {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #fffaf4, #f5f0e6);
-            color: #5d4037;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
             font-size: 1.4em;
-            display: none;
-            z-index: 100;
-            border: 3px solid #8d6e63;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-            width: 80%;
-            max-width: 400px;
-        }
-
-        .game-over h2 {
-            color: #5d4037;
-            margin-top: 0;
-            font-size: 1.6em;
-        }
-
-        .game-over p {
-            margin: 15px 0;
-            font-size: 1.1em;
-        }
-
-        .game-over button {
-            margin-top: 15px;
-            background: linear-gradient(135deg, #8d6e63, #6d4c41);
-            font-size: 1em;
-            padding: 12px 20px;
-            width: auto;
+            padding: 20px 0;
         }
 
         @media (max-width: 600px) {
             h1 {
-                font-size: 1.6em;
+                font-size: 1.4em;
             }
             .game-info {
                 min-width: auto;
                 width: 100%;
+                font-size: 0.9em;
             }
-            .mobile-controls {
-                display: grid;
+            .controls {
+                font-size: 0.75em;
             }
-            canvas {
-                width: 100%;
-                height: auto;
+            .score-value {
+                font-size: 1.3em;
             }
         }
     </style>
@@ -250,7 +214,7 @@
             </div>
         </div>
         
-        <!-- Виртуальные кнопки для мобильных -->
+        <!-- Виртуальные кнопки -->
         <div class="mobile-controls" id="mobile-controls">
             <button class="mobile-btn" id="btn-left">←</button>
             <button class="mobile-btn center" id="btn-rotate">↻</button>
@@ -290,7 +254,7 @@
                 init() {
                     this.canvas = document.getElementById('tetris');
                     if (!this.canvas) {
-                        console.error('Canvas с id="tetris" не найден');
+                        console.error('Canvas не найден');
                         return;
                     }
                     this.ctx = this.canvas.getContext('2d');
@@ -307,10 +271,14 @@
                 },
 
                 resizeCanvas() {
-                    const parentWidth = this.canvas.parentElement.clientWidth;
-                    const maxWidth = window.innerWidth * 0.9;
-                    let blockSize = Math.floor(Math.min(maxWidth, 600) / this.COLS);
-                    blockSize = Math.min(blockSize, 30);
+                    const maxWidth = 300;
+                    const maxHeight = window.innerHeight * 0.5;
+                    const maxBlockSizeByWidth = Math.floor(maxWidth / this.COLS);
+                    const maxBlockSizeByHeight = Math.floor(maxHeight / this.ROWS);
+                    
+                    let blockSize = Math.min(maxBlockSizeByWidth, maxBlockSizeByHeight, 30);
+                    blockSize = Math.max(blockSize, 15);
+
                     this.BLOCK_SIZE = blockSize;
                     this.canvas.width = this.COLS * blockSize;
                     this.canvas.height = this.ROWS * blockSize;
@@ -355,23 +323,17 @@
                 },
 
                 PIECES: [
-                    [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], // I
-                    [[1,1],[1,1]],                             // O
-                    [[0,1,0],[1,1,1],[0,0,0]],                 // T
-                    [[0,0,1],[1,1,1],[0,0,0]],                 // L
-                    [[1,0,0],[1,1,1],[0,0,0]],                 // J
-                    [[0,1,1],[1,1,0],[0,0,0]],                 // S
-                    [[1,1,0],[0,1,1],[0,0,0]]                  // Z
+                    [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
+                    [[1,1],[1,1]],
+                    [[0,1,0],[1,1,1],[0,0,0]],
+                    [[0,0,1],[1,1,1],[0,0,0]],
+                    [[1,0,0],[1,1,1],[0,0,0]],
+                    [[0,1,1],[1,1,0],[0,0,0]],
+                    [[1,1,0],[0,1,1],[0,0,0]]
                 ],
 
                 COLORS: [
-                    '#e91e63', // C
-                    '#ffeb3b', // D
-                    '#2196f3', // B
-                    '#4caf50', // A
-                    '#ff9800', // E
-                    '#9c27b0', // K
-                    '#00bcd4'  // B12
+                    '#e91e63','#ffeb3b','#2196f3','#4caf50','#ff9800','#9c27b0','#00bcd4'
                 ],
 
                 createPiece() {
